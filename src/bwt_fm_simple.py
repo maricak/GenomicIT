@@ -6,6 +6,15 @@ class BwtFmSimple(bfi.BwtFmInterface):
         super().__init__(text)
 
     def _build_suffix_array(self):
-        suffix_matrix = sorted([(self._text[i:], i)
-                                for i in range(len(self._text))])
+        suffix_matrix = sorted([(self._text[i:], i) for i in range(len(self._text))])
         return list(map(lambda suffix_index: suffix_index[1], suffix_matrix))
+
+    def _build_b_rank_and_counts_per_char(self):
+        counts = dict()
+        ranks = []
+        for c in self._bwt:
+            if (c not in counts):
+                counts[c] = 0
+            ranks.append(counts[c])
+            counts[c] += 1
+        return ranks, counts
