@@ -1,63 +1,107 @@
 import bwt_fm_simple as bfs
 import bwt_fm_optimized as bfo
 
+
 def main():
 
-    bwt_fms = [("Simple algorithm", get_bwt_fm_simple), ("Optimized algorithm", get_bwt_fm_optimized)]
+    bwt_fms = {
+        "simple": {
+            "empty_string": {
+                "bwt_fm": bfs.BwtFmSimple(""),
+                "suffix_array": [0],
+                "bwt": "$",
+                "count_per_char": {'$': 1},
+                "first_column": {'$': (0, 1)}
+            },
+            "ABAABA": {
+                "bwt_fm": bfs.BwtFmSimple("ABAABA"),
+                "suffix_array": [6, 5, 2, 3, 0, 4, 1],
+                "bwt": "ABBA$AA",
+                "count_per_char": {'A': 4, 'B': 2, '$': 1},
+                "first_column": {'A': (1, 5), 'B': (5, 7), '$': (0, 1)}
+            },
+            "BANANA": {
+                "bwt_fm": bfs.BwtFmSimple("BANANA"),
+                "suffix_array": [6, 5, 3, 1, 0, 4, 2],
+                "bwt": "ANNB$AA",
+                "count_per_char": {'A': 3, 'B': 1, 'N': 2, '$': 1},
+                "first_column": {'A': (1, 4), 'B': (4, 5), 'N': (5, 7), '$': (0, 1)}
+            },
+            "MAMA": {
+                "bwt_fm": bfs.BwtFmSimple("MAMA"),
+                "suffix_array": [4, 3, 1, 2, 0],
+                "bwt": "AMMA$",
+                "count_per_char": {'A': 2, 'M': 2, '$': 1},
+                "first_column": {'A': (1, 3), 'M': (3, 5), '$': (0, 1)}
+            },
+            "ABRACADABRA": {
+                "bwt_fm": bfs.BwtFmSimple("ABRACADABRA"),
+                "suffix_array": [11, 10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2],
+                "bwt": "ARD$RCAAAABB",
+                "count_per_char": {'A': 5, 'B': 2, 'C': 1, 'D': 1, 'R': 2, '$': 1},
+                "first_column": {'A': (1, 6), 'B': (6, 8), 'C': (8, 9), 'D': (9, 10), 'R': (10, 12), '$': (0, 1)}
+            }
+        },
+        "optimized": {
+            "empty_string": {
+                "bwt_fm": bfo.BwtFmOptimized("", 2),
+                "suffix_array": [0],
+                "bwt": "$",
+                "count_per_char": {'$': 1},
+                "first_column": {'$': (0, 1)}
+            },
+            "ABAABA": {
+                "bwt_fm": bfo.BwtFmOptimized("ABAABA", 2),
+                "suffix_array": [6, 2, 0, 1],
+                "bwt": "ABBA$AA",
+                "count_per_char": {'A': 4, 'B': 2, '$': 1},
+                "first_column": {'A': (1, 5), 'B': (5, 7), '$': (0, 1)}
+            },
+            "BANANA": {
+                "bwt_fm": bfo.BwtFmOptimized("BANANA", 2),
+                "suffix_array": [6, 3, 0, 2],
+                "bwt": "ANNB$AA",
+                "count_per_char": {'A': 3, 'B': 1, 'N': 2, '$': 1},
+                "first_column": {'A': (1, 4), 'B': (4, 5), 'N': (5, 7), '$': (0, 1)}
+            },
+            "MAMA": {
+                "bwt_fm": bfo.BwtFmOptimized("MAMA", 2),
+                "suffix_array": [4, 1, 0],
+                "bwt": "AMMA$",
+                "count_per_char": {'A': 2, 'M': 2, '$': 1},
+                "first_column": {'A': (1, 3), 'M': (3, 5), '$': (0, 1)}
+            },
+            "ABRACADABRA": {
+                "bwt_fm": bfo.BwtFmOptimized("ABRACADABRA", 2),
+                "suffix_array": [11, 7, 3, 8, 4, 9],
+                "bwt": "ARD$RCAAAABB",
+                "count_per_char": {'A': 5, 'B': 2, 'C': 1, 'D': 1, 'R': 2, '$': 1},
+                "first_column": {'A': (1, 6), 'B': (6, 8), 'C': (8, 9), 'D': (9, 10), 'R': (10, 12), '$': (0, 1)}
+            }
+        }
+    }
 
-    for bwt_fm in bwt_fms:
-        print("--------------------------- " + bwt_fm[0] + " ---------------------------")
+    for algorithm in ["simple", "optimized"]:
+        print("--------------------------- " + algorithm + " ---------------------------")
 
-        print("Testing suffix arrays")
-        test_suffix_array(bwt_fm[1], "", [0])
-        test_suffix_array(bwt_fm[1], "ABAABA", [6, 5, 2, 3, 0, 4, 1])
-        test_suffix_array(bwt_fm[1], "BANANA", [6, 5, 3, 1, 0, 4, 2])
-        test_suffix_array(bwt_fm[1], "MAMA", [4, 3, 1, 2, 0])
-        test_suffix_array(bwt_fm[1], "ABRACADABRA", [11, 10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2])
+        print("Testing suffix array build")
+        for (text, data) in bwt_fms[algorithm].items():
+            assert data["bwt_fm"]._suffix_array == data["suffix_array"]
 
-        print("Testing bwt")
-        test_bwt(bwt_fm[1], "", "$")
-        test_bwt(bwt_fm[1], "ABAABA", "ABBA$AA")
-        test_bwt(bwt_fm[1], "BANANA", "ANNB$AA")
-        test_bwt(bwt_fm[1], "MAMA", "AMMA$")
-        test_bwt(bwt_fm[1], "ABRACADABRA", "ARD$RCAAAABB")
+        print("Testing bwt build")
+        for (text, data) in bwt_fms[algorithm].items():
+            assert data["bwt_fm"]._bwt == data["bwt"]
 
         print("Testing count per char")
-        test_count_per_char(bwt_fm[1], "", {'$' : 1})
-        test_count_per_char(bwt_fm[1], "ABAABA", {'A' : 4, 'B' : 2, '$' : 1})
-        test_count_per_char(bwt_fm[1], "BANANA", {'A' : 3, 'B' : 1, 'N' : 2, '$' : 1})
-        test_count_per_char(bwt_fm[1], "MAMA", {'A' : 2, 'M' : 2, '$' : 1})
-        test_count_per_char(bwt_fm[1], "ABRACADABRA", {'A': 5, 'B': 2, 'C': 1, 'D': 1, 'R': 2, '$': 1})
+        for (text, data) in bwt_fms[algorithm].items():
+            assert data["bwt_fm"]._count_per_char() == data["count_per_char"]
 
         print("Testing first column")
-        test_first_column(bwt_fm[1], "", {'$' : (0, 1)})
-        test_first_column(bwt_fm[1], "ABAABA", {'A' : (1, 5), 'B' : (5, 7), '$' : (0, 1)})
-        test_first_column(bwt_fm[1], "BANANA", {'A' : (1, 4), 'B' : (4, 5), 'N' : (5, 7), '$' : (0, 1)})
-        test_first_column(bwt_fm[1], "MAMA", {'A' : (1, 3), 'M' : (3, 5), '$' : (0, 1)})
-        test_first_column(bwt_fm[1], "ABRACADABRA", {'A': (1, 6), 'B': (6, 8), 'C': (8, 9), 'D': (9, 10), 'R': (10, 12), '$': (0, 1)})
+        for (text, data) in bwt_fms[algorithm].items():
+            assert data["bwt_fm"]._first_column == data["first_column"]
 
     print("--------------------------- Testing done! ---------------------------")
 
-def get_bwt_fm_simple(text):
-    return bfs.BwtFmSimple(text)
 
-def get_bwt_fm_optimized(text):
-    return bfo.BwtFmOptimized(text)
-
-def test_suffix_array(factory, text, expected):
-    bwt_fm = factory(text)
-    assert bwt_fm._suffix_array() == expected
-
-def test_bwt(factory, text, expected):
-    bwt_fm = factory(text)
-    assert bwt_fm._bwt == expected
-
-def test_count_per_char(factory, text, expected):
-    bwt_fm = factory(text)
-    assert bwt_fm._count_per_char() == expected
-
-def test_first_column(factory, text, expected):
-    bwt_fm = factory(text)
-    assert bwt_fm._first_column == expected
-
-main()
+if __name__ == '__main__':
+    main()
