@@ -25,3 +25,12 @@ class BwtFmSimple(bfi.BwtFmInterface):
 
     def _position_in_text(self, first_column_index):
         return self._suffix_array[first_column_index]
+
+    def _find_predecessors_in_range(self, c, start, end):
+        try:
+            first = start + self._bwt[start:end].index(c)
+            last = end - start - self._bwt[end - 1:start - 1:-1].index(c)
+        except ValueError:
+            return None
+        else:
+            return (self._left_mapping(first), self._left_mapping(last))
