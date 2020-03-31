@@ -30,3 +30,23 @@ class BwtFmOptimized(bfi.BwtFmInterface):
                 for c in current_count:
                     tally[c].append(current_count[c])
         return tally
+
+    def _get_b_rank(self, bwt_index):
+        c = self._bwt[bwt_index]
+        if c == '$':
+            return 0
+        tally_index = bwt_index // self._tally_factor
+        c_count = self._tally[c][tally_index]
+        current_index = tally_index * self._tally_factor + 1
+        while (current_index <= bwt_index):
+            if self._bwt[current_index] == c:
+                c_count += 1
+            current_index += 1
+        return c_count - 1
+
+    def _position_in_text(self, first_column_index):
+        difference = 0
+        while (first_column_index % self._suffix_array_factor != 0):
+            first_column_index = self._left_mapping(first_column_index)
+            difference += 1
+        return (self._suffix_array[first_column_index // self._suffix_array_factor] + difference) % len(self._bwt)

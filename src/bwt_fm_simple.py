@@ -19,3 +19,9 @@ class BwtFmSimple(bfi.BwtFmInterface):
             ranks.append(counts[c])
             counts[c] += 1
         return ranks
+
+    def _get_b_rank(self, bwt_index):
+        return self._b_rank[bwt_index]
+
+    def _position_in_text(self, first_column_index):
+        return self._suffix_array[first_column_index]

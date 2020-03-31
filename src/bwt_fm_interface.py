@@ -26,3 +26,23 @@ class BwtFmInterface:
             first_column[c] = (total_count, total_count + count)
             total_count += count
         return first_column
+
+    def _get_b_rank(self, bwt_index):
+        pass
+
+    def _full_b_rank(self):
+        return [self._get_b_rank(i) for i in range(0, len(self._bwt))]
+
+    def _left_mapping(self, bwt_index):
+        c = self._bwt[bwt_index]
+        b_rank = self._get_b_rank(bwt_index)
+        return self._first_column[c][0] + b_rank
+
+    def _full_left_mapping(self):
+        return [self._left_mapping(i) for i in range(0, len(self._bwt))]
+
+    def _position_in_text(self, first_column_index):
+        pass
+
+    def _full_text_positon(self):
+        return [self._position_in_text(i) for i in range(0, len(self._bwt))]
