@@ -43,3 +43,16 @@ class BwtFmInterface:
 
     def _find_predecessors_in_range(self, c, range):
         pass
+
+    def find_pattern(self, pattern):
+        if not pattern:
+            return None
+        if pattern[-1] not in self._counts_per_char or pattern[-1] == '$':
+            return None
+        start, end = self._first_column[pattern[-1]]
+        current_range = (start, end - 1)
+        for c in pattern[-2::-1]:
+            current_range = self._find_predecessors_in_range(c, current_range[0], current_range[1])
+            if current_range == None:
+                return None
+        return [self._position_in_text(i) for i in range(current_range[0], current_range[1] + 1)]
