@@ -55,9 +55,9 @@ class BwtFmOptimized(bfi.BwtFmInterface):
         return (self._suffix_array[first_column_index // self._suffix_array_factor] + difference) % len(self._bwt)
 
     def _find_predecessors_in_range(self, c, start, end):
-        if c == '$':
-            return (0, 0)
-        start_tally = self._get_tally_rank(c, start - 1)
+        if c == '$' or c not in self._counts_per_char:
+            return None
+        start_tally = self._get_tally_rank(c, start - 1) if start != 0 else 0
         end_tally = self._get_tally_rank(c, end)
         c_count = end_tally - start_tally
         if c_count == 0:

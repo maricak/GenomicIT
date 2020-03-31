@@ -27,10 +27,19 @@ class BwtFmSimple(bfi.BwtFmInterface):
         return self._suffix_array[first_column_index]
 
     def _find_predecessors_in_range(self, c, start, end):
-        try:
-            first = start + self._bwt[start:end].index(c)
-            last = end - start - self._bwt[end - 1:start - 1:-1].index(c)
-        except ValueError:
+        if c == '$' or c not in self._counts_per_char:
             return None
-        else:
-            return (self._left_mapping(first), self._left_mapping(last))
+        first = last = None
+        for i in range(start, end+1):
+            if self._bwt[i] == c:
+                first = i
+                break
+        if first == None:
+            return None
+        for i in range(end, start-1, -1):
+            if self._bwt[i] == c:
+                last = i
+                break
+        if last == None:
+            return None
+        return (self._left_mapping(first), self._left_mapping(last))
