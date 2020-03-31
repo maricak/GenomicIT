@@ -127,6 +127,9 @@ def main():
 
     print("--------------------------- Testing done! ---------------------------")
 
-
+    val = bfs.BwtFmSimple("ABAABA")._find_predecessors_in_range('B',1, 4)
+    print(val)
+    val = bfo.BwtFmOptimized("ABAABA", 4, 4)._find_predecessors_in_range('B', 1, 4)
+    print(val)
 if __name__ == '__main__':
     main()
