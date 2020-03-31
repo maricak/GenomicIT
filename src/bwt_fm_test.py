@@ -25,6 +25,8 @@ def main():
         "ABRACADABRA": bfo.BwtFmOptimized("ABRACADABRA", 4, 4),
     }
 
+    print("--------------------------- Start testing! ---------------------------")
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------------
     print("Testing suffix array")
     test("simple", "", "suffix_array", simple_bwt_fms["empty"]._suffix_array, [0])
@@ -261,6 +263,28 @@ def main():
          optimized_bwt_fms["ABAABA"]._find_predecessors_in_range('C', 5, 6), None)
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------------
+    print("Testing pattern search")
+    test("simple", "", "find_pattern ($)", simple_bwt_fms["empty"].find_pattern("$"), None)
+    test("simple", "", "find_pattern ($)", simple_bwt_fms["empty"].find_pattern("A"), None)
+    test("simple", "", "find_pattern ($)", simple_bwt_fms["empty"].find_pattern("ANA"), None)
+
+    test("simple", "ABAABA", "find_pattern (A)", set(simple_bwt_fms["ABAABA"].find_pattern("A")), {0, 2, 3, 5})
+    test("simple", "ABAABA", "find_pattern (AB)", set(simple_bwt_fms["ABAABA"].find_pattern("AB")), {0, 3})
+    test("simple", "ABAABA", "find_pattern (B)", set(simple_bwt_fms["ABAABA"].find_pattern("B")), {1, 4})
+    test("simple", "ABAABA", "find_pattern (ABAABA)", set(simple_bwt_fms["ABAABA"].find_pattern("ABAABA")), {0})
+    test("simple", "ABAABA", "find_pattern (D)", simple_bwt_fms["ABAABA"].find_pattern("D"), None)
+    test("simple", "ABAABA", "find_pattern (ABBB)", simple_bwt_fms["ABAABA"].find_pattern("ABBB"), None)
+
+    test("optimized", "", "find_pattern ($)", optimized_bwt_fms["empty"].find_pattern("$"), None)
+    test("optimized", "", "find_pattern ($)", optimized_bwt_fms["empty"].find_pattern("A"), None)
+    test("optimized", "", "find_pattern ($)", optimized_bwt_fms["empty"].find_pattern("ANA"), None)
+
+    test("optimized", "ABAABA", "find_pattern (A)", set(optimized_bwt_fms["ABAABA"].find_pattern("A")), {0, 2, 3, 5})
+    test("optimized", "ABAABA", "find_pattern (AB)", set(optimized_bwt_fms["ABAABA"].find_pattern("AB")), {0, 3})
+    test("optimized", "ABAABA", "find_pattern (B)", set(optimized_bwt_fms["ABAABA"].find_pattern("B")), {1, 4})
+    test("optimized", "ABAABA", "find_pattern (ABAABA)", set(optimized_bwt_fms["ABAABA"].find_pattern("ABAABA")), {0})
+    test("optimized", "ABAABA", "find_pattern (D)", optimized_bwt_fms["ABAABA"].find_pattern("D"), None)
+    test("optimized", "ABAABA", "find_pattern (ABBB)", optimized_bwt_fms["ABAABA"].find_pattern("ABBB"), None)
     print("--------------------------- Testing done! ---------------------------")
 
 
