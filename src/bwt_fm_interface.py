@@ -30,9 +30,6 @@ class BwtFmInterface:
     def _get_b_rank(self, bwt_index):
         pass
 
-    def _full_b_rank(self):
-        return [self._get_b_rank(i) for i in range(0, len(self._bwt))]
-
     def _get_first_column_index(self, c, b_rank):
         return self._first_column[c][0] + b_rank
 
@@ -41,14 +38,8 @@ class BwtFmInterface:
         b_rank = self._get_b_rank(bwt_index)
         return self._get_first_column_index(c, b_rank)
 
-    def _full_left_mapping(self):
-        return [self._left_mapping(i) for i in range(0, len(self._bwt))]
-
     def _position_in_text(self, first_column_index):
         pass
-
-    def _full_text_positon(self):
-        return [self._position_in_text(i) for i in range(0, len(self._bwt))]
 
     def _find_predecessors_in_range(self, c, range):
         pass
