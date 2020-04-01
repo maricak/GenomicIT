@@ -2,16 +2,20 @@ import bwt_fm_interface as bfi
 
 
 class BwtFmOptimized(bfi.BwtFmInterface):
-    def __init__(self, text, suffix_array_factor, tally_factor):
-        super().__init__(text)
+    def __init__(self, text, suffix_array_factor, tally_factor, suffix_array_file=None):
+        self._suffix_array_file = suffix_array_file
         self._suffix_array_factor = suffix_array_factor
         self._tally_factor = tally_factor
+        super().__init__(text)
         self._suffix_array = self._downsample_suffix_array()
         self._tally = self._build_tally()
 
     def _build_suffix_array(self):
-        suffix_matrix = sorted([(self._text[i:], i) for i in range(len(self._text))])
-        return list(map(lambda suffix_index: suffix_index[1], suffix_matrix))
+        if self._suffix_array_file == None:
+            return super()._build_suffix_array()
+        else:
+            with open(self._suffix_array_file, "r") as file:
+                return[int(x) for x in file.read().split(' ')]
 
     def _downsample_suffix_array(self):
         return [position for index, position in enumerate(self._suffix_array) if index % self._suffix_array_factor == 0]

@@ -1,3 +1,5 @@
+import os 
+
 import bwt_fm_simple as bfs
 import bwt_fm_optimized as bfo
 
@@ -6,6 +8,7 @@ def test(algorithm, text, test, actual, expected):
     assert actual == expected, "type: {}, text: {}, test: {}\n{} <-- expected\n{} <-- actual".format(
         algorithm, text, test, expected, actual)
 
+this_foler = os.path.dirname(os.path.abspath(__file__))
 
 def main():
 
@@ -22,7 +25,7 @@ def main():
         "ABAABA": bfo.BwtFmOptimized("ABAABA", 2, 1),
         "BANANA": bfo.BwtFmOptimized("BANANA", 2, 2),
         "MAMA": bfo.BwtFmOptimized("MAMA", 2, 2),
-        "ABRACADABRA": bfo.BwtFmOptimized("ABRACADABRA", 4, 4),
+        "ABRACADABRA": bfo.BwtFmOptimized("ABRACADABRA", 4, 4, os.path.join(this_foler, "ulaz.txt")),
     }
 
     print("--------------------------- Start testing! ---------------------------")

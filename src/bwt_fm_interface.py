@@ -10,7 +10,8 @@ class BwtFmInterface:
         self._first_column = self._build_first_column()
 
     def _build_suffix_array(self):
-        pass
+        suffix_matrix = sorted([(self._text[i:], i) for i in range(len(self._text))])
+        return list(map(lambda suffix_index: suffix_index[1], suffix_matrix))
 
     def _build_bwt(self):
         bwt = [self._text[suffix_start - 1] if suffix_start != 0 else '$' for suffix_start in self._suffix_array]
