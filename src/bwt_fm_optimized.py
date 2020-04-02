@@ -1,4 +1,5 @@
 import bwt_fm_interface as bfi
+import time
 
 
 class BwtFmOptimized(bfi.BwtFmInterface):
@@ -7,8 +8,18 @@ class BwtFmOptimized(bfi.BwtFmInterface):
         self._suffix_array_factor = suffix_array_factor
         self._tally_factor = tally_factor
         super().__init__(text)
+
+        print("Start downsampling suffix array")
+        start = time.time()
         self._suffix_array = self._downsample_suffix_array()
+        end = time.time()
+        print("Done downsampling suffix array in", end - start, "seconds")
+
+        print("Start buildng tally matrix")
+        start = time.time()
         self._tally = self._build_tally()
+        end = time.time()
+        print("Done buiding tally matrix in", end - start, "seconds")
 
     def _build_suffix_array(self):
         if self._suffix_array_file == None:
