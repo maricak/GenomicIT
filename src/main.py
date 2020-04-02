@@ -79,7 +79,7 @@ def main():
         start = time.time()
         positions = bwt_fm.find_pattern(pattern)
         end = time.time()
-        print(pattern, "found on", len(positions), "positions in", end - start, "seconds")
+        print(pattern, "found on", len(positions) if positions != None else 0, "positions in", end - start, "seconds")
 
     print("Memory usage is", memory_usage(), "MB")
     
