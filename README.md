@@ -16,3 +16,19 @@ Pripremiti prezentaciju (Google slides ili power point) inicijalnog i optimizova
 
 Pripremiti video prezentaciju projekta (3 - 5 minuta trajanja) koja će biti dostupna na YouTube ili drugom on-line video servisu (10 poena).
 
+## Komande za pokretanje analize i pertraživanje
+
+`python main.py -s/-ss/-o file_full_path niz_stringova_koji_se_pretražuje`
+
+Treba navesti samo jednu od opcija -s -ss -c
+* -s - jednostavan algoritam sa naivnom implementacijom konstrukcije sufiksnog niza
+* -ss - jednostavan algoritam koji za konustrukciu sufiksnog niza koristi SAIS implementaciju u C-u
+* -o - optimizovan algoritam koji za konustrukciu sufiksnog niza koristi SAIS implementaciju u C-u
+
+Potrebno je imati izvršni fajl SAIS imlementacije za konstrukciju sufiksnog niza pod nazivom `sais` u istom folderu gde se nalazi skripta `main.py`
+
+Primer pretraživanja stringova `ACACAC`, `ATGCATGC`, `ATTTTATAT` u okviru fajla `Coffea arabica chromosome 1c.fasta` pomoću optimizovanog algoritma
+
+`python main.py -o "puna\putanja\do\fajla\Coffea arabica chromosome 1c.fasta"` `ACACAC`, `ATGCATGC`, `ATTTTATAT`
+
+Video: https://youtu.be/YDkezNHV2Uw 
