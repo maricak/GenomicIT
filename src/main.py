@@ -15,11 +15,13 @@ def read_sequence(file_path):
         for record in SeqIO.parse(file, "fasta"):
             return str(record.seq)
 
+
 def memory_usage():
     process = psutil.Process(os.getpid())
     return process.memory_info().rss / 1024 / 1024
 
-usage = "-o(ptimized)/-s(imple) fasta_file patterns... "
+
+usage = "-o(optimized)/-s(simple)/-ss(simple with SAIS) fasta_file patterns... "
 
 
 def main():
@@ -27,10 +29,10 @@ def main():
         print("Not enough arguments")
         print(usage)
         return
-    
+
     algorithm = sys.argv[1]
-    if not algorithm == "-o" and not algorithm == "-s":
-        print("First argument must be -o for opitmized or -s for simple algorithm")
+    if not algorithm == "-o" and not algorithm == "-s" and not algorithm == "-ss":
+        print("First argument must be -o for opitmized algorithm, -s for simple algorithm or -ss for simple algorithm wiht SAIS suffix array construction")
         print(usage)
         return
 
@@ -49,13 +51,7 @@ def main():
     end = time.time()
     print("Reading done in", end - start, "seconds")
 
-    if algorithm == "-s":
-        print("Start making BwtFmSimple object")
-        start = time.time()
-        bwt_fm = bfs.BwtFmSimple(text)
-        end = time.time()
-        print("BwtFmSimple object created in", end - start, "seconds")
-    else:
+    if algorithm != "-s":
         print("Start printing sequence in file for the SAIS")
         start = time.time()
         sa_file = open("sequence.txt", "w")
@@ -68,6 +64,13 @@ def main():
         subprocess.check_output(["./sais", "sequence.txt", "sa_file.txt"])
         print("SAIS done")
 
+    if algorithm == "-s" or algorithm == "-ss":
+        print("Start making BwtFmSimple object")
+        start = time.time()
+        bwt_fm = bfs.BwtFmSimple(text, "sa_file.txt" if algorithm == "-ss" else None)
+        end = time.time()
+        print("BwtFmSimple object created in", end - start, "seconds")
+    else:
         print("Start making BwtFmOptimized object")
         start = time.time()
         bwt_fm = bfo.BwtFmOptimized(text, 128, 128, "sa_file.txt")
@@ -82,6 +85,7 @@ def main():
         print(pattern, "found on", len(positions) if positions != None else 0, "positions in", end - start, "seconds")
 
     print("Memory usage is", memory_usage(), "MB")
-    
+
+
 if __name__ == "__main__":
     main()

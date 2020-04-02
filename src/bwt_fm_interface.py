@@ -3,7 +3,8 @@ import time
 
 
 class BwtFmInterface:
-    def __init__(self, text):
+    def __init__(self, text, suffix_array_file=None):
+        self._suffix_array_file = suffix_array_file
         self._text = text + '$'
 
         print("Start building suffix array")
@@ -31,8 +32,12 @@ class BwtFmInterface:
         print("Done building first column in", end - start, "seconds")
 
     def _build_suffix_array(self):
-        suffix_matrix = sorted([(self._text[i:], i) for i in range(len(self._text))])
-        return list(map(lambda suffix_index: suffix_index[1], suffix_matrix))
+        if self._suffix_array_file == None:
+            suffix_matrix = sorted([(self._text[i:], i) for i in range(len(self._text))])
+            return list(map(lambda suffix_index: suffix_index[1], suffix_matrix))
+        else:
+            with open(self._suffix_array_file, "r") as file:
+                return[int(x) for x in file.read().split(' ')]
 
     def _build_bwt(self):
         bwt = [self._text[suffix_start - 1] if suffix_start != 0 else '$' for suffix_start in self._suffix_array]

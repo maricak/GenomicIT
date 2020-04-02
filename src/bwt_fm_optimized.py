@@ -4,11 +4,9 @@ import time
 
 class BwtFmOptimized(bfi.BwtFmInterface):
     def __init__(self, text, suffix_array_factor, tally_factor, suffix_array_file=None):
-        self._suffix_array_file = suffix_array_file
         self._suffix_array_factor = suffix_array_factor
         self._tally_factor = tally_factor
-        super().__init__(text)
-
+        super().__init__(text, suffix_array_file)
         print("Start downsampling suffix array")
         start = time.time()
         self._suffix_array = self._downsample_suffix_array()
@@ -20,13 +18,6 @@ class BwtFmOptimized(bfi.BwtFmInterface):
         self._tally = self._build_tally()
         end = time.time()
         print("Done buiding tally matrix in", end - start, "seconds")
-
-    def _build_suffix_array(self):
-        if self._suffix_array_file == None:
-            return super()._build_suffix_array()
-        else:
-            with open(self._suffix_array_file, "r") as file:
-                return[int(x) for x in file.read().split(' ')]
 
     def _downsample_suffix_array(self):
         return [position for index, position in enumerate(self._suffix_array) if index % self._suffix_array_factor == 0]
