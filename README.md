@@ -31,4 +31,6 @@ Primer pretraživanja stringova `ACACAC`, `ATGCATGC`, `ATTTTATAT` u okviru fajla
 
 `python main.py -o "puna\putanja\do\fajla\Coffea arabica chromosome 1c.fasta"` `ACACAC`, `ATGCATGC`, `ATTTTATAT`
 
+Skripta sa testovima se naziva `bwt_fm_test.py`. Ona zahteva tekstualni fajl ulaz.txt u kojem se nalazi sufiksi niz za tekst "ABRACADABRA"
+
 Video: https://youtu.be/YDkezNHV2Uw 
