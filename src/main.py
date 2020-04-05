@@ -1,8 +1,8 @@
 import os
-import subprocess
 import time
 import sys
 import psutil
+import argparse
 from os.path import isfile
 from Bio import SeqIO
 
@@ -25,59 +25,55 @@ usage = "-o(optimized)/-s(simple)/-ss(simple with SAIS) fasta_file patterns... "
 
 
 def main():
-    if len(sys.argv) < 3:
-        print("Not enough arguments")
-        print(usage)
+    parser = argparse.ArgumentParser(description="Search for patterns in the fasta file")
+    parser.add_argument("-a", "--algorithm", dest="algorithm", choices=["s", "o"],
+                        required=True, help="Choose simple or optimized algorithm")
+    parser.add_argument("-sa_f", "--suffix_array_factor", dest="suffix_array_factor", type=int,
+                        choices=[1, 2, 4, 8, 16, 32, 64, 128, 256], default=128, help="Suffix array factor. Default 128")
+    parser.add_argument("-t_f", "--tally_factor", dest="tally_matrix_factor", type=int,
+                        choices=[1, 2, 4, 8, 16, 32, 64, 128, 256], default=128, help="Tally matrix factor. Default 128")
+    parser.add_argument("-sa", "--suffix_array", dest="suffix_array_file", help="Suffix array file")
+    parser.add_argument("-g", "--genome", dest="file", required=True, help="Genome file")
+    parser.add_argument("-p", "--patterns", dest="patterns", nargs='+', required=True,
+                        help="Patterns to be searched for in the genome")
+    args = parser.parse_args()
+
+    if not isfile(args.file):
+        print(args.file, " is not a file")
+        parser.print_usage()
         return
 
-    algorithm = sys.argv[1]
-    if not algorithm == "-o" and not algorithm == "-s" and not algorithm == "-ss":
-        print("First argument must be -o for opitmized algorithm, -s for simple algorithm or -ss for simple algorithm wiht SAIS suffix array construction")
-        print(usage)
-        return
+    if args.algorithm == "o":
+        if args.suffix_array_file is None:
+            print("Suffix array file is required for optimized algorithm")
+            parser.print_usage()
+            return
+        if not isfile(args.suffix_array_file):
+            print(args.suffix_array_file, " is not a file")
+            parser.print_usage()
+            return
 
-    file = sys.argv[2]
-    if not isfile(file):
-        print(file, "is not file")
-        print(usage)
-        return
-
-    patterns = sys.argv[3:]
-
-    print("Start analizing file ", file)
+    print("Start analizing file ", args.file)
     print("Reading sequence from FASTA file")
     start = time.time()
-    text = read_sequence(file)
+    text = read_sequence(args.file)
     end = time.time()
     print("Reading done in", end - start, "seconds")
 
-    if algorithm != "-s":
-        print("Start printing sequence in file for the SAIS")
-        start = time.time()
-        sa_file = open("sequence.txt", "w")
-        sa_file.write(text + '$')
-        sa_file.close()
-        end = time.time()
-        print("Done writing sequence in", end - start, "seconds")
-
-        print("Start SAIS")
-        subprocess.check_output(["./sais", "sequence.txt", "sa_file.txt"])
-        print("SAIS done")
-
-    if algorithm == "-s" or algorithm == "-ss":
+    if args.algorithm == "s":
         print("Start making BwtFmSimple object")
         start = time.time()
-        bwt_fm = bfs.BwtFmSimple(text, suffix_array_file="sa_file.txt" if algorithm == "-ss" else None)
+        bwt_fm = bfs.BwtFmSimple(text, suffix_array_file=args.suffix_array_file)
         end = time.time()
         print("BwtFmSimple object created in", end - start, "seconds")
     else:
         print("Start making BwtFmOptimized object")
         start = time.time()
-        bwt_fm = bfo.BwtFmOptimized(text, 128, 128, "sa_file.txt")
+        bwt_fm = bfo.BwtFmOptimized(text, args.suffix_array_factor, args.tally_matrix_factor, args.suffix_array_file)
         end = time.time()
-        print("BwtFmSimple object created in", end - start, "seconds")
+        print("BwtFmOptimized object created in", end - start, "seconds")
 
-    for pattern in patterns:
+    for pattern in args.patterns:
         print("Start searching for", pattern)
         start = time.time()
         positions = bwt_fm.find_pattern(pattern)
