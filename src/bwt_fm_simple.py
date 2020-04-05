@@ -4,7 +4,7 @@ import time
 
 class BwtFmSimple(bfi.BwtFmInterface):
     def __init__(self, text, suffix_array_file=None):
-        super().__init__(text, suffix_array_file)
+        super().__init__(text, suffix_array_file=suffix_array_file)
 
         print("Start building B-rank")
         start = time.time()
