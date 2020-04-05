@@ -67,7 +67,7 @@ def main():
     if algorithm == "-s" or algorithm == "-ss":
         print("Start making BwtFmSimple object")
         start = time.time()
-        bwt_fm = bfs.BwtFmSimple(text, "sa_file.txt" if algorithm == "-ss" else None)
+        bwt_fm = bfs.BwtFmSimple(text, suffix_array_file="sa_file.txt" if algorithm == "-ss" else None)
         end = time.time()
         print("BwtFmSimple object created in", end - start, "seconds")
     else:

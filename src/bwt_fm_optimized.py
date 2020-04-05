@@ -4,9 +4,7 @@ import time
 
 class BwtFmOptimized(bfi.BwtFmInterface):
     def __init__(self, text, suffix_array_factor, tally_factor, suffix_array_file=None):
-        self._suffix_array_factor = suffix_array_factor
-        self._tally_factor = tally_factor
-        super().__init__(text, suffix_array_file)
+        super().__init__(text, suffix_array_factor, tally_factor, suffix_array_file)
         print("Start downsampling suffix array")
         start = time.time()
         self._suffix_array = self._downsample_suffix_array()

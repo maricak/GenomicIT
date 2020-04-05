@@ -3,8 +3,10 @@ import time
 
 
 class BwtFmInterface:
-    def __init__(self, text, suffix_array_file=None):
+    def __init__(self, text, suffix_array_factor=None, tally_factor=None, suffix_array_file=None):
         self._suffix_array_file = suffix_array_file
+        self._suffix_array_factor = suffix_array_factor
+        self._tally_factor = tally_factor
         self._text = text + '$'
 
         print("Start building suffix array")
