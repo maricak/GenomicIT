@@ -29,9 +29,9 @@ def main():
     parser.add_argument("-a", "--algorithm", dest="algorithm", choices=["s", "o"],
                         required=True, help="Choose simple or optimized algorithm")
     parser.add_argument("-sa_f", "--suffix_array_factor", dest="suffix_array_factor", type=int,
-                        choices=[1, 2, 4, 8, 16, 32, 64, 128, 256], default=128, help="Suffix array factor. Default 128")
+                        choices=[1, 2, 4, 8, 16, 32, 64, 128, 256, 512], default=128, help="Suffix array factor. Default 128")
     parser.add_argument("-t_f", "--tally_factor", dest="tally_matrix_factor", type=int,
-                        choices=[1, 2, 4, 8, 16, 32, 64, 128, 256], default=128, help="Tally matrix factor. Default 128")
+                        choices=[1, 2, 4, 8, 16, 32, 64, 128, 256, 512], default=128, help="Tally matrix factor. Default 128")
     parser.add_argument("-sa", "--suffix_array", dest="suffix_array_file", help="Suffix array file")
     parser.add_argument("-g", "--genome", dest="file", required=True, help="Genome file")
     parser.add_argument("-p", "--patterns", dest="patterns", nargs='+', required=True,
