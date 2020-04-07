@@ -511,8 +511,8 @@ sais_bwt(const unsigned char *T, unsigned char *U, int *A, int n) {
   if(n <= 1) { if(n == 1) { U[0] = T[0]; } return n; }
   pidx = sais_main(T, A, 0, n, UCHAR_SIZE, sizeof(unsigned char), 1);
   if(pidx < 0) { return pidx; }
-  U[0] = T[n - 1];
-  for(i = 0; i < pidx; ++i) { U[i + 1] = (unsigned char)A[i]; }
+  for(i = 0; i < pidx; ++i) { U[i] = (unsigned char)A[i]; }
+  U[i] = T[n - 1];
   for(i += 1; i < n; ++i) { U[i] = (unsigned char)A[i]; }
   pidx += 1;
   return pidx;

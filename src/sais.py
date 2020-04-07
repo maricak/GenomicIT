@@ -13,7 +13,8 @@ def read_sequence(file_path):
 def main():
     parser = argparse.ArgumentParser(description="Run SAIS algorithm on the given genome file")
     parser.add_argument("-g", "--genome", dest="file", required=True, help="Genome file")
-    parser.add_argument("-o", "--output", dest="output", required=True, help="Output file")
+    parser.add_argument("-sa", "--suffix_array", dest="sa_file", required=True, help="Output file for the suffix array")
+    parser.add_argument("-bwt", "--bwt", dest="bwt_file", required=True, help="Output file for the BWT")
 
     args = parser.parse_args()
 
@@ -32,7 +33,7 @@ def main():
     print("Done writing sequence in", end - start, "seconds")
 
     print("Start SAIS")
-    subprocess.check_output(["./sais", "seq.txt", args.output])
+    subprocess.check_output(["./sais", "seq.txt", args.sa_file, args.bwt_file])
     print("SAIS done")
 
 if __name__ == "__main__":
