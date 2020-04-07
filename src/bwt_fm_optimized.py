@@ -1,21 +1,12 @@
 import bwt_fm_interface as bfi
-import time
 
 
 class BwtFmOptimized(bfi.BwtFmInterface):
     def __init__(self, text, suffix_array_factor, tally_factor, suffix_array_file=None):
         super().__init__(text, suffix_array_factor, tally_factor, suffix_array_file)
-        print("Start downsampling suffix array")
-        start = time.time()
+        
         self._suffix_array = self._downsample_suffix_array()
-        end = time.time()
-        print("Done downsampling suffix array in", end - start, "seconds")
-
-        print("Start buildng tally matrix")
-        start = time.time()
         self._tally = self._build_tally()
-        end = time.time()
-        print("Done buiding tally matrix in", end - start, "seconds")
 
     def _downsample_suffix_array(self):
         return [position for index, position in enumerate(self._suffix_array) if index % self._suffix_array_factor == 0]

@@ -1,16 +1,11 @@
 import bwt_fm_interface as bfi
-import time
 
 
 class BwtFmSimple(bfi.BwtFmInterface):
     def __init__(self, text, suffix_array_file=None):
         super().__init__(text, suffix_array_file=suffix_array_file)
 
-        print("Start building B-rank")
-        start = time.time()
         self._b_rank = self._build_b_rank()
-        end = time.time()
-        print("Done building B-rank in", end - start, "seconds")
 
     def _build_b_rank(self):
         counts = dict()

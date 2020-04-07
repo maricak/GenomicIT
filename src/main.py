@@ -21,9 +21,6 @@ def memory_usage():
     return process.memory_info().rss / 1024 / 1024
 
 
-usage = "-o(optimized)/-s(simple)/-ss(simple with SAIS) fasta_file patterns... "
-
-
 def main():
     parser = argparse.ArgumentParser(description="Search for patterns in the fasta file")
     parser.add_argument("-a", "--algorithm", dest="algorithm", choices=["s", "o"],
@@ -54,24 +51,14 @@ def main():
             return
 
     print("Start analizing file ", args.file)
-    print("Reading sequence from FASTA file")
-    start = time.time()
     text = read_sequence(args.file)
-    end = time.time()
-    print("Reading done in", end - start, "seconds")
 
     if args.algorithm == "s":
         print("Start making BwtFmSimple object")
-        start = time.time()
         bwt_fm = bfs.BwtFmSimple(text, suffix_array_file=args.suffix_array_file)
-        end = time.time()
-        print("BwtFmSimple object created in", end - start, "seconds")
     else:
         print("Start making BwtFmOptimized object")
-        start = time.time()
         bwt_fm = bfo.BwtFmOptimized(text, args.suffix_array_factor, args.tally_matrix_factor, args.suffix_array_file)
-        end = time.time()
-        print("BwtFmOptimized object created in", end - start, "seconds")
 
     for pattern in args.patterns:
         print("Start searching for", pattern)

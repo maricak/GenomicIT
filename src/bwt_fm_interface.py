@@ -1,5 +1,4 @@
 from collections import Counter
-import time
 
 
 class BwtFmInterface:
@@ -9,29 +8,10 @@ class BwtFmInterface:
         self._tally_factor = tally_factor
         self._text = text + '$'
 
-        print("Start building suffix array")
-        start = time.time()
         self._suffix_array = self._build_suffix_array()
-        end = time.time()
-        print("Done building suffix array in", end - start, "seconds")
-
-        print("Start building BWT")
-        start = time.time()
         self._bwt = self._build_bwt()
-        end = time.time()
-        print("Done building BWT in", end - start, "seconds")
-
-        print("Start counting per char")
-        start = time.time()
         self._counts_per_char = self._build_counts_per_char()
-        end = time.time()
-        print("Done counting per char in", end - start, "seconds")
-
-        print("Start building first column")
-        start = time.time()
         self._first_column = self._build_first_column()
-        end = time.time()
-        print("Done building first column in", end - start, "seconds")
 
     def _build_suffix_array(self):
         if self._suffix_array_file == None:
