@@ -18,18 +18,55 @@ Pripremiti video prezentaciju projekta (3 - 5 minuta trajanja) koja će biti dos
 
 ## Komande za pokretanje analize i pertraživanje
 
-`python main.py -s/-ss/-o file_full_path niz_stringova_koji_se_pretražuje`
+### Pripremanje fajlova sa sufiksnim nizom i BWT pomoću SAIS algoritma
+```
+usage: sais.py [-h] -g FILE -sa SA_FILE -bwt BWT_FILE
 
-Treba navesti samo jednu od opcija -s -ss -c
-* -s - jednostavan algoritam sa naivnom implementacijom konstrukcije sufiksnog niza
-* -ss - jednostavan algoritam koji za konustrukciu sufiksnog niza koristi SAIS implementaciju u C-u
-* -o - optimizovan algoritam koji za konustrukciu sufiksnog niza koristi SAIS implementaciju u C-u
+Run SAIS algorithm on the given genome file
 
-Potrebno je imati izvršni fajl SAIS imlementacije za konstrukciju sufiksnog niza pod nazivom `sais` u istom folderu gde se nalazi skripta `main.py`
+optional arguments:
+  -h, --help            show this help message and exit
+  -g FILE, --genome FILE
+                        Genome file
+  -sa SA_FILE, --suffix_array SA_FILE
+                        Output file for the suffix array
+  -bwt BWT_FILE, --bwt BWT_FILE
+                        Output file for the BWT
+```
 
-Primer pretraživanja stringova `ACACAC`, `ATGCATGC`, `ATTTTATAT` u okviru fajla `Coffea arabica chromosome 1c.fasta` pomoću optimizovanog algoritma
+Ova skripta podrazumeva postojanje izvrnog fajla sa implementacijom SAIS algoritma čiji se izvorni kod nalazi u folderu sais. 
 
-`python main.py -o "puna\putanja\do\fajla\Coffea arabica chromosome 1c.fasta"` `ACACAC`, `ATGCATGC`, `ATTTTATAT`
+Primer kreiranja sufiksnog niza i BWT za genom iz fajla `Coffea arabica chromosome 1c.fasta`:
+
+`python sais.py -g "puna\putanja\do\fajla\Coffea arabica chromosome 1c.fasta" -sa "puna\putanja\do\fajla\gde\ce\biti\sacuvan\sufiksni\niz" -bwt puna\putanja\do\fajla\gde\ce\biti\sacuvana\bwt"`
+
+### Pretraživanje genoma
+```
+usage: main.py [-h] -a {s,o} [-sa_f {1,2,4,8,16,32,64,128,256,512}] [-t_f {1,2,4,8,16,32,64,128,256,512}] [-sa SUFFIX_ARRAY_FILE] [-bwt BWT_FILE] -g FILE -p PATTERNS [PATTERNS ...]
+
+Search for patterns in the fasta file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -a {s,o}, --algorithm {s,o}
+                        Choose simple or optimized algorithm
+  -sa_f {1,2,4,8,16,32,64,128,256,512}, --suffix_array_factor {1,2,4,8,16,32,64,128,256,512}
+                        Suffix array factor. Default 128
+  -t_f {1,2,4,8,16,32,64,128,256,512}, --tally_factor {1,2,4,8,16,32,64,128,256,512}
+                        Tally matrix factor. Default 128
+  -sa SUFFIX_ARRAY_FILE, --suffix_array SUFFIX_ARRAY_FILE
+                        Suffix array file
+  -bwt BWT_FILE, --bwt BWT_FILE
+                        BWT file
+  -g FILE, --genome FILE
+                        Genome file
+  -p PATTERNS [PATTERNS ...], --patterns PATTERNS [PATTERNS ...]
+                        Patterns to be searched for in the genome
+```
+
+Primer pretraživanja stringova `ACACAC`, `ATGCATGC`, `ATTTTATAT` u okviru fajla `Coffea arabica chromosome 1c.fasta` pomoću optimizovanog algoritma uz pripremljeni fajl sa sufiksnim nizom i faktorima 32 za sufiksni niz i 64 za tally matricu:
+
+`python main.py -a o -sa_f 32 -t_f 64 -sa "puna\putanja\do\fajla\sa\sufiksnim\nizom" -g "puna\putanja\do\fajla\Coffea arabica chromosome 1c.fasta" -p ACACAC, ATGCATGC, ATTTTATAT`
 
 Skripta sa testovima se naziva `bwt_fm_test.py`. Ona zahteva fajlove koji sadrže sufiksni niz za svaki od tekstova koji se testira ("", "ABAABA", "MAMA", "BANANA", "ABRACADABRA") i jedan fajl koji sadrži BWT teksta "ABRACADABRA". Svi fajlovi treba da imaju naziv kao tekst na koji se odnose zapisan malim slovima osmi za prazan tekst gde se fajl zove "empty". Ektstenzije fajlova treba da budu .suffix ili .bwt. Fajlovi se očekuju u folderu test.
 
