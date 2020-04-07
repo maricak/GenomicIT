@@ -31,6 +31,6 @@ Primer pretraživanja stringova `ACACAC`, `ATGCATGC`, `ATTTTATAT` u okviru fajla
 
 `python main.py -o "puna\putanja\do\fajla\Coffea arabica chromosome 1c.fasta"` `ACACAC`, `ATGCATGC`, `ATTTTATAT`
 
-Skripta sa testovima se naziva `bwt_fm_test.py`. Ona zahteva tekstualni fajl ulaz.txt u kojem se nalazi sufiksi niz za tekst "ABRACADABRA"
+Skripta sa testovima se naziva `bwt_fm_test.py`. Ona zahteva fajlove koji sadrže sufiksni niz za svaki od tekstova koji se testira ("", "ABAABA", "MAMA", "BANANA", "ABRACADABRA") i jedan fajl koji sadrži BWT teksta "ABRACADABRA". Svi fajlovi treba da imaju naziv kao tekst na koji se odnose zapisan malim slovima osmi za prazan tekst gde se fajl zove "empty". Ektstenzije fajlova treba da budu .suffix ili .bwt. Fajlovi se očekuju u folderu test.
 
 Video: https://youtu.be/YDkezNHV2Uw 
