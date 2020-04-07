@@ -23,11 +23,12 @@ def main():
     }
 
     optimized_bwt_fms = {
-        "empty": bfo.BwtFmOptimized("", 2, 2),
-        "ABAABA": bfo.BwtFmOptimized("ABAABA", 2, 1),
-        "BANANA": bfo.BwtFmOptimized("BANANA", 2, 2),
-        "MAMA": bfo.BwtFmOptimized("MAMA", 2, 2),
-        "ABRACADABRA": bfo.BwtFmOptimized("ABRACADABRA", 4, 4, os.path.join(this_foler, "ulaz.txt")),
+        "empty": bfo.BwtFmOptimized("", 2, 2, os.path.join(this_foler, "test\\empty.suffix")),
+        "ABAABA": bfo.BwtFmOptimized("ABAABA", 2, 1, os.path.join(this_foler, "test\\abaaba.suffix")),
+        "BANANA": bfo.BwtFmOptimized("BANANA", 2, 2, os.path.join(this_foler, "test\\banana.suffix")),
+        "MAMA": bfo.BwtFmOptimized("MAMA", 2, 2, os.path.join(this_foler, "test\\mama.suffix")),
+        "ABRACADABRA": bfo.BwtFmOptimized("ABRACADABRA", 4, 4, os.path.join(this_foler, "test\\abracadabra.suffix"),
+                                          os.path.join(this_foler, "test\\abracadabra.bwt")),
     }
 
     print("--------------------------- Start testing! ---------------------------")

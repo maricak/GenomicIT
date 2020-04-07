@@ -2,14 +2,23 @@ import bwt_fm_interface as bfi
 
 
 class BwtFmOptimized(bfi.BwtFmInterface):
-    def __init__(self, text, suffix_array_factor, tally_factor, suffix_array_file=None):
-        super().__init__(text, suffix_array_factor, tally_factor, suffix_array_file)
-        
-        self._suffix_array = self._downsample_suffix_array()
+    def __init__(self, text, suffix_array_factor, tally_factor, suffix_array_file=None, bwt_file=None):
+        super().__init__(text, suffix_array_factor, tally_factor, suffix_array_file, bwt_file)
+
+        if self._bwt_file == None:
+            self._suffix_array = self._downsample_suffix_array()
         self._tally = self._build_tally()
 
     def _downsample_suffix_array(self):
         return [position for index, position in enumerate(self._suffix_array) if index % self._suffix_array_factor == 0]
+
+    def _build_suffix_array(self):
+        with open(self._suffix_array_file, "r") as file:
+            if self._bwt_file != None:
+                return [int(position) for index, position in enumerate(file.read().split(' '))
+                        if index % self._suffix_array_factor == 0]
+            else:
+                return[int(x) for x in file.read().split(' ')]
 
     def _build_tally(self):
         current_count = dict()

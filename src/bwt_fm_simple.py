@@ -2,11 +2,19 @@ import bwt_fm_interface as bfi
 
 
 class BwtFmSimple(bfi.BwtFmInterface):
-    def __init__(self, text, suffix_array_file=None):
-        super().__init__(text, suffix_array_file=suffix_array_file)
+    def __init__(self, text, suffix_array_file=None, bwt_file=None):
+        super().__init__(text, suffix_array_file=suffix_array_file, bwt_file=bwt_file)
 
         self._b_rank = self._build_b_rank()
 
+    def _build_suffix_array(self):
+        if self._suffix_array_file == None:
+            suffix_matrix = sorted([(self._text[i:], i) for i in range(len(self._text))])
+            return list(map(lambda suffix_index: suffix_index[1], suffix_matrix))
+        else:
+            with open(self._suffix_array_file, "r") as file:
+                return[int(x) for x in file.read().split(' ')]
+                
     def _build_b_rank(self):
         counts = dict()
         ranks = []

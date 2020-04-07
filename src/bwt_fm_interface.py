@@ -2,8 +2,9 @@ from collections import Counter
 
 
 class BwtFmInterface:
-    def __init__(self, text, suffix_array_factor=None, tally_factor=None, suffix_array_file=None):
+    def __init__(self, text, suffix_array_factor=None, tally_factor=None, suffix_array_file=None, bwt_file=None):
         self._suffix_array_file = suffix_array_file
+        self._bwt_file = bwt_file
         self._suffix_array_factor = suffix_array_factor
         self._tally_factor = tally_factor
         self._text = text + '$'
@@ -14,16 +15,15 @@ class BwtFmInterface:
         self._first_column = self._build_first_column()
 
     def _build_suffix_array(self):
-        if self._suffix_array_file == None:
-            suffix_matrix = sorted([(self._text[i:], i) for i in range(len(self._text))])
-            return list(map(lambda suffix_index: suffix_index[1], suffix_matrix))
-        else:
-            with open(self._suffix_array_file, "r") as file:
-                return[int(x) for x in file.read().split(' ')]
+        pass
 
     def _build_bwt(self):
-        bwt = [self._text[suffix_start - 1] if suffix_start != 0 else '$' for suffix_start in self._suffix_array]
-        return ''.join(bwt)
+        if self._bwt_file == None:
+            bwt = [self._text[suffix_start - 1] if suffix_start != 0 else '$' for suffix_start in self._suffix_array]
+            return ''.join(bwt)
+        else:
+            with open(self._bwt_file, "r") as file:
+                return file.read()
 
     def _build_counts_per_char(self):
         return dict(Counter(self._bwt))
