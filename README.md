@@ -70,4 +70,4 @@ Primer pretraživanja stringova `ACACAC`, `ATGCATGC`, `ATTTTATAT` u okviru fajla
 
 Skripta sa testovima se naziva `bwt_fm_test.py`. Ona zahteva fajlove koji sadrže sufiksni niz za svaki od tekstova koji se testira ("", "ABAABA", "MAMA", "BANANA", "ABRACADABRA") i jedan fajl koji sadrži BWT teksta "ABRACADABRA". Svi fajlovi treba da imaju naziv kao tekst na koji se odnose zapisan malim slovima osmi za prazan tekst gde se fajl zove "empty". Ektstenzije fajlova treba da budu .suffix ili .bwt. Fajlovi se očekuju u folderu test.
 
-Video: https://youtu.be/YDkezNHV2Uw 
+Video: https://youtu.be/TBygWAThzgk
